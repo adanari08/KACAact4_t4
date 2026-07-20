@@ -1,0 +1,27 @@
+info:
+  name: 6 -  Actualizar cancion
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: http://127.0.0.1:8000/api/canciones/1
+  body:
+    type: json
+    data: |-
+      {
+        "titulo": "Canción de Prueba (editada)",
+        "duracion_segundos": 200,
+        "anio": 2024,
+        "album_id": 1,
+        "generos": [1]
+      }
+  auth:
+    type: bearer
+    token: 4|jCyNZLMdHxEZdKgG7DMn2BiV1VV4IHBmX4c0zPRx192019aa
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

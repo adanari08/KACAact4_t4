@@ -1,0 +1,24 @@
+info:
+  name: 1 - Registro
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://127.0.0.1:8000/api/register
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Kelly Prueba",
+        "email": "kelly@ejemplo.com",
+        "password": "password123",
+        "password_confirmation": "password123"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

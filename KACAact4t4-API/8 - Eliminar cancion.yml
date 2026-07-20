@@ -1,0 +1,17 @@
+info:
+  name: 8 - Eliminar cancion
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: http://127.0.0.1:8000/api/canciones/1
+  auth:
+    type: bearer
+    token: 4|jCyNZLMdHxEZdKgG7DMn2BiV1VV4IHBmX4c0zPRx192019aa
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

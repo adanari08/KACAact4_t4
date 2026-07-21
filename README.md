@@ -2,9 +2,9 @@
 
 Este es el proyecto de la **Actividad 4 (Tema 4)**: construir una API REST en Laravel, con autenticación real usando tokens (Sanctum), probada con una herramienta llamada Bruno.
 
-##  De qué trata esta actividad, explicado sencillo
+##  De qué trata esta actividad:
 
-En la actividad pasada (Act3) hice una página web normal, donde uno entra con el navegador y ve botones, tablas, formularios, todo bonito con HTML. En esta actividad **no hay nada de eso**. Aquí lo que construí es una **API**, que es básicamente un "servicio" al que otras aplicaciones (como una app de celular, una página hecha en React, etc.) le pueden preguntar cosas y él les responde, pero en vez de responder con una página bonita, responde con puro **texto en formato JSON** (que es como un objeto de información ordenado, fácil de leer para una computadora).
+Aquí lo que construí es una **API**, que es básicamente un "servicio" al que otras aplicaciones (como una app de celular, una página hecha en React, etc.) le pueden preguntar cosas y él les responde, pero en vez de responder con una página bonita, responde con puro **texto en formato JSON** (que es como un objeto de información ordenado, fácil de leer para una computadora).
 
 Por ejemplo, en vez de ver una tabla de canciones en el navegador, si le pido a mi API "dame todas las canciones", me responde algo así:
 
@@ -22,9 +22,9 @@ Por ejemplo, en vez de ver una tabla de canciones en el navegador, si le pido a 
 
 Y otro punto importante: aquí **no cualquiera puede usar la API**. Antes tienes que "iniciar sesión" y la API te da una especie de "llave" (un token) que tienes que enseñar cada vez que le pides algo. Si no traes esa llave, te rechaza.
 
-## Reutilicé el mismo tema de música de mi actividad pasada
+## El tema es la Musica
 
-Uso las mismas 3 entidades relacionadas: **Álbum**, **Canción** y **Género** (con las mismas relaciones: un Álbum tiene muchas Canciones, y una Canción puede tener varios Géneros). La diferencia es que aquí todo el CRUD (crear, ver, editar, borrar canciones) se hace a través de la API, no de páginas web.
+Uso las mismas 3 entidades relacionadas: **Álbum**, **Canción** y **Género** (las relaciones: un Álbum tiene muchas Canciones, y una Canción puede tener varios Géneros). La diferencia es que aquí todo el CRUD (crear, ver, editar, borrar canciones) se hace a través de la API, no de páginas web.
 
 ##  Herramientas que usé y para qué sirve cada una
 

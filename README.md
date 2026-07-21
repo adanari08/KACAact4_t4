@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  API de Música con Autenticación — KACAact4t4
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este es el proyecto de la **Actividad 4 (Tema 4)**: construir una API REST en Laravel, con autenticación real usando tokens (Sanctum), probada con una herramienta llamada Bruno.
 
-## About Laravel
+##  De qué trata esta actividad, explicado sencillo
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+En la actividad pasada (Act3) hice una página web normal, donde uno entra con el navegador y ve botones, tablas, formularios, todo bonito con HTML. En esta actividad **no hay nada de eso**. Aquí lo que construí es una **API**, que es básicamente un "servicio" al que otras aplicaciones (como una app de celular, una página hecha en React, etc.) le pueden preguntar cosas y él les responde, pero en vez de responder con una página bonita, responde con puro **texto en formato JSON** (que es como un objeto de información ordenado, fácil de leer para una computadora).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Por ejemplo, en vez de ver una tabla de canciones en el navegador, si le pido a mi API "dame todas las canciones", me responde algo así:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "titulo": "Canción de Prueba",
+      "album": { "titulo": "Horizonte eterno" }
+    }
+  ]
+}
+```
 
-## Learning Laravel
+Y otro punto importante: aquí **no cualquiera puede usar la API**. Antes tienes que "iniciar sesión" y la API te da una especie de "llave" (un token) que tienes que enseñar cada vez que le pides algo. Si no traes esa llave, te rechaza.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Reutilicé el mismo tema de música de mi actividad pasada
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Uso las mismas 3 entidades relacionadas: **Álbum**, **Canción** y **Género** (con las mismas relaciones: un Álbum tiene muchas Canciones, y una Canción puede tener varios Géneros). La diferencia es que aquí todo el CRUD (crear, ver, editar, borrar canciones) se hace a través de la API, no de páginas web.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+##  Herramientas que usé y para qué sirve cada una
 
-## Laravel Sponsors
+| Herramienta | Para qué la usé, en palabras sencillas |
+|---|---|
+| **Laravel 12** | El framework de PHP con el que está hecho todo. Me ahorra tener que programar desde cero cosas como las rutas, la conexión a la base de datos, etc. |
+| **Composer** | El programa que instala Laravel y todas las demás "piezas" (paquetes) que necesita el proyecto para funcionar, como Sanctum. |
+| **MySQL** | Donde se guardan de verdad los datos: los álbumes, las canciones, los géneros, y también los usuarios y sus tokens. |
+| **Laravel Sanctum** | Es el paquete que le da a mi proyecto la capacidad de manejar "logins" con tokens. Sin Sanctum, cualquiera podría crear, editar o borrar canciones sin haberse identificado. Lo tuve que investigar por mi cuenta porque el video que vimos en clase no lo explicaba a fondo. |
+| **API Resources** | Son como "filtros" que decido yo mismo, que controlan exactamente qué información sale en el JSON de respuesta. Por ejemplo, así me aseguro de que la contraseña del usuario JAMÁS aparezca en ninguna respuesta, aunque internamente sí esté guardada (encriptada) en la base de datos. |
+| **Bruno** | Es un programa (parecido a Postman, pero gratis) que sirve para "simular" que soy una aplicación externa y probar mi API a mano: mandarle peticiones, ver qué me responde, con o sin token, etc. Sin una herramienta así sería muy difícil probar una API, porque no se puede probar completa solo desde el navegador. |
+| **Git y GitHub** | Para subir mi código a un repositorio en línea, incluyendo las pruebas que hice con Bruno como evidencia. |
+| **Nginx + PHP-FPM** | El servidor que hace que mi proyecto esté disponible en internet, ya no solo en mi computadora, sino en el VPS (una especie de "computadora rentada" que usamos como equipo). |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+##  Cómo se conecta todo (el flujo completo)
 
-### Premium Partners
+1. **Alguien (o algo) manda una petición** a una URL de mi API, por ejemplo `POST /api/register` para registrarse.
+2. **Laravel revisa las rutas** en el archivo `routes/api.php` (que es distinto al `routes/web.php` que usé en Act3 — este es especial solo para peticiones de API, no para páginas web) y decide a qué "controlador" mandar esa petición.
+3. Si la ruta está protegida (como crear una canción), **Sanctum revisa si la petición trae un token válido** en sus cabeceras. Si no lo trae, ahí mismo la rechaza con un error 401 y ni siquiera deja que el código siga corriendo.
+4. Si todo está bien, el **controlador** hace lo que le pedían (buscar, crear, editar o borrar algo), hablando con la base de datos a través de los **modelos** (Álbum, Canción, Género).
+5. Antes de responder, pasa los datos por un **API Resource**, que decide exactamente qué información mandar de vuelta (y qué esconder, como la contraseña).
+6. La respuesta final sale en formato **JSON**.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+##  Cómo funciona la parte de autenticación (Sanctum), explicado paso a paso
 
-## Contributing
+1. Un usuario nuevo manda sus datos a `/api/register` (nombre, correo, contraseña).
+2. Laravel guarda ese usuario en la base de datos, pero **la contraseña nunca se guarda tal cual la escribió** — se guarda "encriptada" (con una función llamada `Hash::make()`), para que ni siquiera alguien con acceso a la base de datos pueda leerla directamente.
+3. Justo después de registrarse, Sanctum le genera un **token**: un texto largo y único, como una contraseña temporal especial solo para usar la API.
+4. De ahí en adelante, cada vez que ese usuario quiera hacer algo (crear una canción, por ejemplo), tiene que mandar ese token en sus peticiones (en Bruno, esto se configura en la pestaña "Auth" como "Bearer Token").
+5. Si alguien intenta usar un endpoint protegido **sin** ese token, Laravel automáticamente lo rechaza con un código de error **401** y un mensaje `{"message": "Unauthenticated."}` — sin llegar siquiera a tocar la base de datos. Esto es justo lo que se ve al entrar desde el navegador normal a una ruta protegida, porque el navegador no tiene forma de mandar un token.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##  Validación de datos
 
-## Code of Conduct
+Si alguien manda datos incompletos o mal formados al crear o editar una canción (por ejemplo, sin título), Laravel automáticamente responde con código **422** y un JSON explicando exactamente qué campo falló, por ejemplo:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```json
+{
+  "message": "The titulo field is required.",
+  "errors": {
+    "titulo": ["The titulo field is required."]
+  }
+}
+```
 
-## Security Vulnerabilities
+##  Cómo probé todo (con Bruno)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Armé una colección de pruebas en Bruno (guardada en la carpeta `KACAact4t4-API` de este mismo repositorio) con una petición por cada cosa que debía probar:
 
-## License
+1. Registro de usuario
+2. Login
+3. Crear una canción (con token)
+4. Listar canciones (con paginación)
+5. Ver una canción específica
+6. Actualizar una canción
+7. Probar que falle la validación a propósito (mandando datos incompletos)
+8. Eliminar una canción
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+También probé que, sin mandar el token, cualquier intento de usar el CRUD es rechazado.
+
+##  Cómo se desplegó en el VPS
+
+1. Subí el proyecto a GitHub (sin subir el `.env` ni la carpeta `vendor/`, que están en `.gitignore`).
+2. Me conecté al VPS por SSH y cloné el repositorio ahí.
+3. Instalé las dependencias con Composer (tuve que ajustar algunas versiones porque el VPS tiene una versión de PHP distinta a mi computadora).
+4. Creé una base de datos y un usuario de MySQL exclusivos para este proyecto en el servidor.
+5. Configuré un `.env` nuevo en el servidor (distinto al de mi computadora, con los datos de la base de datos del VPS).
+6. Corrí las migraciones y el seeder ahí (`php artisan migrate --seed`).
+7. Configuré Nginx para que reconociera la carpeta de mi proyecto y la sirviera correctamente, apuntando a la carpeta `public/`.
+
+
+
+

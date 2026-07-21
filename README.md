@@ -39,7 +39,7 @@ Uso las mismas 3 entidades relacionadas: **Álbum**, **Canción** y **Género** 
 | **Git y GitHub** | Para subir mi código a un repositorio en línea, incluyendo las pruebas que hice con Bruno como evidencia. |
 | **Nginx + PHP-FPM** | El servidor que hace que mi proyecto esté disponible en internet, ya no solo en mi computadora, sino en el VPS (una especie de "computadora rentada" que usamos como equipo). |
 
-##  Cómo se conecta todo (el flujo completo)
+##  Cómo se conecta todo 
 
 1. **Alguien (o algo) manda una petición** a una URL de mi API, por ejemplo `POST /api/register` para registrarse.
 2. **Laravel revisa las rutas** en el archivo `routes/api.php` (que es distinto al `routes/web.php` que usé en Act3 — este es especial solo para peticiones de API, no para páginas web) y decide a qué "controlador" mandar esa petición.
@@ -48,7 +48,7 @@ Uso las mismas 3 entidades relacionadas: **Álbum**, **Canción** y **Género** 
 5. Antes de responder, pasa los datos por un **API Resource**, que decide exactamente qué información mandar de vuelta (y qué esconder, como la contraseña).
 6. La respuesta final sale en formato **JSON**.
 
-##  Cómo funciona la parte de autenticación (Sanctum), explicado paso a paso
+##  Cómo funciona la parte de autenticación (Sanctum)
 
 1. Un usuario nuevo manda sus datos a `/api/register` (nombre, correo, contraseña).
 2. Laravel guarda ese usuario en la base de datos, pero **la contraseña nunca se guarda tal cual la escribió** — se guarda "encriptada" (con una función llamada `Hash::make()`), para que ni siquiera alguien con acceso a la base de datos pueda leerla directamente.

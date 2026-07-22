@@ -120,7 +120,7 @@ También probé que, sin mandar el token, cualquier intento de usar el CRUD es r
 | PUT | `/api/canciones/{id}` | Sí | Actualiza los datos de una canción existente |
 | DELETE | `/api/canciones/{id}` | Sí | Elimina una canción |
 
-## Prueba en vivo: Bruno ↔ VPS ↔ MySQL
+## Prueba: Bruno ↔ VPS ↔ MySQL
 
 Para comprobar que las operaciones desde Bruno se reflejan realmente en la base de datos del VPS (y no solo en local), se hizo la siguiente prueba con el environment **VPS** activo en Bruno:
 
